@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#173b32">
+  <meta name="description" content="Registro sencillo de horas extraordinarias">
+  <title>Horas Extra</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app">
+    <header class="top">
+      <div>
+        <p class="eyebrow">REGISTRO PERSONAL</p>
+        <h1>Horas Extra</h1>
+        <p class="sub">Registra tus horarios. La suma se hace sola.</p>
+      </div>
+      <span class="save-state" id="saveState" aria-live="polite">Guardado</span>
+    </header>
+
+    <section class="panel total-panel">
+      <label for="monthPicker">Mes de trabajo</label>
+      <input id="monthPicker" type="month">
+      <p class="total-label">TOTAL ACUMULADO</p>
+      <div class="total" id="grandTotal">0 h 00 min</div>
+      <p class="hint">Este total se actualiza automáticamente.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Agregar jornada</h2>
+      <form id="entryForm">
+        <label for="workDate">Fecha</label>
+        <input id="workDate" type="date" required>
+        <div class="two">
+          <div>
+            <label for="startTime">Hora de inicio</label>
+            <input id="startTime" type="time" required>
+          </div>
+          <div>
+            <label for="endTime">Hora de término</label>
+            <input id="endTime" type="time" required>
+          </div>
+        </div>
+        <p class="form-error" id="formError" role="alert"></p>
+        <button class="primary" type="submit">＋ Agregar al registro</button>
+      </form>
+    </section>
+
+    <section class="panel">
+      <div class="section-heading">
+        <h2>Jornadas del mes</h2>
+        <span id="entryCount" class="count">0 registros</span>
+      </div>
+      <div id="entries" class="entries">
+        <p class="empty">Todavía no hay jornadas registradas en este mes.</p>
+      </div>
+    </section>
+
+    <section class="panel tools">
+      <h2>Respaldo de datos</h2>
+      <p class="hint">Exporta una copia para conservar tus registros si cambias de celular o reinstalas la aplicación.</p>
+      <button class="secondary" id="exportBtn" type="button">Descargar respaldo</button>
+      <label class="file-label" for="importFile">Recuperar respaldo</label>
+      <input id="importFile" type="file" accept="application/json,.json" hidden>
+      <p class="hint small">Los datos quedan guardados en este dispositivo. El respaldo es importante: borrar los datos del navegador puede eliminarlos.</p>
+    </section>
+
+    <footer>Horas y minutos se calculan por separado. Revisa los horarios antes de copiar el total al formulario de papel.</footer>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>

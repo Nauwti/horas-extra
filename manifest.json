@@ -1,0 +1,19 @@
+{
+  "name": "Horas Extra",
+  "short_name": "Horas Extra",
+  "description": "Registro sencillo de horas extraordinarias",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f2f5f3",
+  "theme_color": "#173b32",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "lang": "es"
+}
