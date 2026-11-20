@@ -24,7 +24,7 @@
     <section class="panel total-panel">
       <label for="monthPicker">Mes de trabajo</label>
       <input id="monthPicker" type="month">
-      <p class="total-label">TOTAL ACUMULADO</p>
+      <p class="total-label">TOTAL DEL MES SELECCIONADO</p>
       <div class="total" id="grandTotal">0 h 00 min</div>
       <p class="hint">Este total se actualiza automáticamente.</p>
     </section>
@@ -37,13 +37,14 @@
         <div class="two">
           <div>
             <label for="startTime">Hora de inicio</label>
-            <input id="startTime" type="time" required>
+            <input id="startTime" type="text" inputmode="numeric" autocomplete="off" maxlength="5" placeholder="HH:MM" aria-describedby="timeHint" required>
           </div>
           <div>
             <label for="endTime">Hora de término</label>
-            <input id="endTime" type="time" required>
+            <input id="endTime" type="text" inputmode="numeric" autocomplete="off" maxlength="5" placeholder="HH:MM" aria-describedby="timeHint" required>
           </div>
         </div>
+        <p class="time-hint" id="timeHint">Escribe la hora en formato 24 horas. Ejemplo: 1730 se convierte en 17:30.</p>
         <p class="form-error" id="formError" role="alert"></p>
         <button class="primary" type="submit">＋ Agregar al registro</button>
       </form>
