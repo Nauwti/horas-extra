@@ -36,6 +36,17 @@ function save() {
     $("saveState").style.color = "#a3261e";
   }
 }
+function parseTime(value) {
+  const match = String(value).trim().match(/^(\\d{1,2}):?(\\d{2})$/);
+  if (!match) return null;
+  const hours = Number(match[1]), minutes = Number(match[2]);
+  if (hours > 23 || minutes > 59) return null;
+  return `${String(hours).padStart(2,"0")}:${String(minutes).padStart(2,"0")}`;
+}
+function formatTimeInput(input) {
+  const digits = input.value.replace(/\\D/g,"").slice(0,4);
+  input.value = digits.length > 2 ? `${digits.slice(0,2)}:${digits.slice(2)}` : digits;
+}
 function duration(start,end) {
   const [sh,sm]=start.split(":").map(Number);
   const [eh,em]=end.split(":").map(Number);
@@ -65,11 +76,13 @@ function render() {
       <button class="delete" type="button" data-delete="${escapeHtml(r.id)}" aria-label="Eliminar registro">Eliminar registro</button>
     </article>`).join("");
 }
+$("startTime").addEventListener("input",()=>formatTimeInput($("startTime")));
+$("endTime").addEventListener("input",()=>formatTimeInput($("endTime")));
 form.addEventListener("submit", (event)=>{
   event.preventDefault();
   errorEl.textContent="";
-  const date=workDate.value, start=$("startTime").value, end=$("endTime").value;
-  if (!date||!start||!end) { errorEl.textContent="Completa la fecha y los dos horarios."; return; }
+  const date=workDate.value, start=parseTime($("startTime").value), end=parseTime($("endTime").value);
+  if (!date||!start||!end) { errorEl.textContent="Completa la fecha y escribe horarios válidos, por ejemplo 1730."; return; }
   const mins=duration(start,end);
   if (mins<=0) { errorEl.textContent="La hora de término debe ser posterior a la de inicio. Revisa los horarios."; return; }
   if (mins>=12*60) { errorEl.textContent="La duración supera 12 horas. Revisa que los horarios estén correctos."; return; }
