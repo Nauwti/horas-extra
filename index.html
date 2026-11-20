@@ -22,11 +22,9 @@
     </header>
 
     <section class="panel total-panel">
-      <label for="monthPicker">Mes de trabajo</label>
-      <input id="monthPicker" type="month">
-      <p class="total-label">TOTAL DEL MES SELECCIONADO</p>
+      <p class="total-label">TOTAL ACUMULADO</p>
       <div class="total" id="grandTotal">0 h 00 min</div>
-      <p class="hint">Este total se actualiza automáticamente.</p>
+      <p class="hint">Incluye todas tus jornadas registradas, sin importar el mes.</p>
     </section>
 
     <section class="panel">
@@ -76,12 +74,13 @@
 
     <section class="panel">
       <div class="section-heading">
-        <h2>Jornadas del mes</h2>
+        <h2>Historial de jornadas</h2>
         <span id="entryCount" class="count">0 registros</span>
       </div>
       <div id="entries" class="entries">
-        <p class="empty">Todavía no hay jornadas registradas en este mes.</p>
+        <p class="empty">Todavía no hay jornadas registradas.</p>
       </div>
+      <button class="clear-all" id="clearAllBtn" type="button">Borrar todos los registros</button>
     </section>
 
     <section class="panel tools">
