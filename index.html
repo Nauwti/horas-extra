@@ -32,8 +32,29 @@
     <section class="panel">
       <h2>Agregar jornada</h2>
       <form id="entryForm">
-        <label for="workDate">Fecha</label>
-        <input id="workDate" type="date" required>
+        <label>Fecha de la jornada</label>
+        <div class="date-parts">
+          <div>
+            <label for="dateDay">Día</label>
+            <select id="dateDay" aria-label="Día"></select>
+          </div>
+          <div>
+            <label for="dateMonth">Mes</label>
+            <select id="dateMonth" aria-label="Mes">
+              <option value="01">Enero</option><option value="02">Febrero</option>
+              <option value="03">Marzo</option><option value="04">Abril</option>
+              <option value="05">Mayo</option><option value="06">Junio</option>
+              <option value="07">Julio</option><option value="08">Agosto</option>
+              <option value="09">Septiembre</option><option value="10">Octubre</option>
+              <option value="11">Noviembre</option><option value="12">Diciembre</option>
+            </select>
+          </div>
+          <div>
+            <label for="dateYear">Año</label>
+            <select id="dateYear" aria-label="Año"></select>
+          </div>
+        </div>
+        <input id="workDate" type="hidden">
         <div class="two">
           <div>
             <label for="startTime">Hora de inicio</label>
