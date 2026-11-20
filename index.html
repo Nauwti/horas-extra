@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#173b32">
-  <meta name="description" content="Registro sencillo de horas extraordinarias">
+  <meta name="description" content="Calculadora sencilla de horas extraordinarias">
   <title>Horas Extra</title>
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="icon.svg" type="image/svg+xml">
@@ -14,9 +14,9 @@
   <main class="app">
     <header class="top">
       <div>
-        <p class="eyebrow">REGISTRO PERSONAL</p>
+        <p class="eyebrow">CALCULADORA PERSONAL</p>
         <h1>Horas Extra</h1>
-        <p class="sub">Registra tus horarios. La suma se hace sola.</p>
+        <p class="sub">Calcula tus horas extra y acumula el total.</p>
       </div>
       <span class="save-state" id="saveState" aria-live="polite">Guardado</span>
     </header>
@@ -28,34 +28,8 @@
     </section>
 
     <section class="panel">
-      <h2>Agregar jornada</h2>
+      <h2>Nuevo cálculo</h2>
       <form id="entryForm">
-        <label>Fecha de la jornada</label>
-        <div class="date-parts">
-          <div>
-            <label for="dateDay">Día</label>
-            <div class="day-control">
-              <select id="dateDay" aria-label="Día"></select>
-              <button class="next-day" id="nextDayBtn" type="button" aria-label="Avanzar al día siguiente" title="Día siguiente">›</button>
-            </div>
-          </div>
-          <div>
-            <label for="dateMonth">Mes</label>
-            <select id="dateMonth" aria-label="Mes">
-              <option value="01">Enero</option><option value="02">Febrero</option>
-              <option value="03">Marzo</option><option value="04">Abril</option>
-              <option value="05">Mayo</option><option value="06">Junio</option>
-              <option value="07">Julio</option><option value="08">Agosto</option>
-              <option value="09">Septiembre</option><option value="10">Octubre</option>
-              <option value="11">Noviembre</option><option value="12">Diciembre</option>
-            </select>
-          </div>
-          <div>
-            <label for="dateYear">Año</label>
-            <select id="dateYear" aria-label="Año"></select>
-          </div>
-        </div>
-        <input id="workDate" type="hidden">
         <div class="two">
           <div>
             <label for="startTime">Hora de inicio</label>
@@ -68,17 +42,17 @@
         </div>
         <p class="time-hint" id="timeHint">Escribe 4 números sin dos puntos. Ejemplo: 1730. Al salir del campo aparecerá 17:30.</p>
         <p class="form-error" id="formError" role="alert"></p>
-        <button class="primary" type="submit">＋ Agregar al registro</button>
+        <button class="primary" type="submit">＋ Agregar cálculo</button>
       </form>
     </section>
 
     <section class="panel">
       <div class="section-heading">
-        <h2>Historial de jornadas</h2>
+        <h2>Registros</h2>
         <span id="entryCount" class="count">0 registros</span>
       </div>
       <div id="entries" class="entries">
-        <p class="empty">Todavía no hay jornadas registradas.</p>
+        <p class="empty">Todavía no hay cálculos registrados.</p>
       </div>
       <button class="clear-all" id="clearAllBtn" type="button">Borrar todos los registros</button>
     </section>
@@ -92,7 +66,7 @@
       <p class="hint small">Los datos quedan guardados en este dispositivo. El respaldo es importante: borrar los datos del navegador puede eliminarlos.</p>
     </section>
 
-    <footer>Horas y minutos se calculan por separado. Revisa los horarios antes de copiar el total al formulario de papel.</footer>
+    <footer>Cada cálculo se guarda con un número consecutivo. Revisa el total antes de copiarlo al formulario de papel.</footer>
   </main>
   <script src="app.js"></script>
 </body>
