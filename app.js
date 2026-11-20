@@ -45,7 +45,8 @@ function parseTime(value) {
 }
 function formatTimeInput(input) {
   const digits = input.value.replace(/\D/g,"").slice(0,4);
-  input.value = digits.length > 2 ? `${digits.slice(0,2)}:${digits.slice(2)}` : digits;
+  if (digits.length === 3) input.value = `0${digits[0]}:${digits.slice(1)}`;
+  else input.value = digits.length === 4 ? `${digits.slice(0,2)}:${digits.slice(2)}` : digits;
 }
 function duration(start,end) {
   const [sh,sm]=start.split(":").map(Number);
