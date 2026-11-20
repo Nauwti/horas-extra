@@ -114,6 +114,11 @@ function render() {
     </article>`).join("");
 }
 dateDay.addEventListener("change", updateHiddenDate);
+$("nextDayBtn").addEventListener("click", () => {
+  const [year, month, day] = workDate.value.split("-").map(Number);
+  const next = new Date(year, month - 1, day + 1, 12);
+  setDateSelector(localDateString(next));
+});
 dateMonth.addEventListener("change", () => refreshDayOptions(dateDay.value));
 dateYear.addEventListener("change", () => refreshDayOptions(dateDay.value));
 ["startTime","endTime"].forEach(id=>{
