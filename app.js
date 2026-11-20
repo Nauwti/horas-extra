@@ -14,6 +14,11 @@ function localDateString(date = new Date()) {
   return `${y}-${m}-${d}`;
 }
 function monthString(date = new Date()) { return localDateString(date).slice(0,7); }
+function nextDateString(value) {
+  const [year, month, day] = value.split("-").map(Number);
+  const next = new Date(year, month - 1, day + 1, 12);
+  return localDateString(next);
+}
 function loadRecords() {
   try {
     const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
@@ -99,6 +104,7 @@ form.addEventListener("submit", (event)=>{
   records.push({id:crypto.randomUUID?crypto.randomUUID():`${Date.now()}-${Math.random()}`,date,start,end,minutes:mins});
   save();
   monthPicker.value=date.slice(0,7);
+  workDate.value=nextDateString(date);
   $("startTime").value="";
   $("endTime").value="";
   render();
