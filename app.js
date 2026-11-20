@@ -10,9 +10,9 @@ function normalizeRecord(r) {
 }
 function validRecord(r) {
   return r && typeof r.id === "string" &&
-    (!("date" in r) || /^\\d{4}-\\d{2}-\\d{2}$/.test(r.date)) &&
-    /^([01]\\d|2[0-3]):[0-5]\\d$/.test(r.start) &&
-    /^([01]\\d|2[0-3]):[0-5]\\d$/.test(r.end) &&
+    (!("date" in r) || /^\d{4}-\d{2}-\d{2}$/.test(r.date)) &&
+    /^([01]\d|2[0-3]):[0-5]\d$/.test(r.start) &&
+    /^([01]\d|2[0-3]):[0-5]\d$/.test(r.end) &&
     Number.isInteger(r.minutes) && r.minutes > 0 && r.minutes < 1440;
 }
 function loadRecords() {
@@ -32,17 +32,17 @@ function save() {
   }
 }
 function parseTime(value) {
-  const match = String(value).trim().match(/^(\\d{1,2}):?(\\d{2})$/);
+  const match = String(value).trim().match(/^(\d{1,2}):?(\d{2})$/);
   if (!match) return null;
   const hours = Number(match[1]), minutes = Number(match[2]);
   if (hours > 23 || minutes > 59) return null;
   return `${String(hours).padStart(2,"0")}:${String(minutes).padStart(2,"0")}`;
 }
 function formatTimeInput(input) {
-  input.value = input.value.replace(/\\D/g,"").slice(0,4);
+  input.value = input.value.replace(/\D/g,"").slice(0,4);
 }
 function prepareTimeInput(input) {
-  input.value = input.value.replace(/\\D/g,"").slice(0,4);
+  input.value = input.value.replace(/\D/g,"").slice(0,4);
 }
 function finishTimeInput(input) {
   const parsed = parseTime(input.value);
