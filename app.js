@@ -2,6 +2,9 @@ const STORAGE_KEY = "horas-extra-registros-v1";
 const $ = (id) => document.getElementById(id);
 const monthPicker = $("monthPicker");
 const workDate = $("workDate");
+const dateDay = $("dateDay");
+const dateMonth = $("dateMonth");
+const dateYear = $("dateYear");
 const form = $("entryForm");
 const entriesEl = $("entries");
 const errorEl = $("formError");
@@ -14,10 +17,33 @@ function localDateString(date = new Date()) {
   return `${y}-${m}-${d}`;
 }
 function monthString(date = new Date()) { return localDateString(date).slice(0,7); }
-function nextDateString(value) {
-  const [year, month, day] = value.split("-").map(Number);
-  const next = new Date(year, month - 1, day + 1, 12);
-  return localDateString(next);
+function daysInMonth(year, month) {
+  return new Date(year, month, 0).getDate();
+}
+function updateHiddenDate() {
+  workDate.value = `${dateYear.value}-${dateMonth.value}-${dateDay.value}`;
+}
+function refreshDayOptions(preferredDay) {
+  const year = Number(dateYear.value);
+  const month = Number(dateMonth.value);
+  const maxDay = daysInMonth(year, month);
+  const selectedDay = Math.min(Number(preferredDay || dateDay.value || 1), maxDay);
+  dateDay.innerHTML = Array.from({length:maxDay}, (_,i) => {
+    const day = i + 1;
+    return `<option value="${String(day).padStart(2,"0")}">${String(day).padStart(2,"0")}</option>`;
+  }).join("");
+  dateDay.value = String(selectedDay).padStart(2,"0");
+  updateHiddenDate();
+}
+function setDateSelector(value) {
+  const [year,month,day] = value.split("-");
+  const currentYear = new Date().getFullYear();
+  const years = new Set(Array.from({length:11},(_,i)=>String(currentYear-5+i)));
+  years.add(year);
+  dateYear.innerHTML = [...years].sort().map(y=>`<option value="${y}">${y}</option>`).join("");
+  dateYear.value = year;
+  dateMonth.value = month;
+  refreshDayOptions(Number(day));
 }
 function loadRecords() {
   try {
@@ -87,6 +113,9 @@ function render() {
       <button class="delete" type="button" data-delete="${escapeHtml(r.id)}" aria-label="Eliminar registro">Eliminar registro</button>
     </article>`).join("");
 }
+dateDay.addEventListener("change", updateHiddenDate);
+dateMonth.addEventListener("change", () => refreshDayOptions(dateDay.value));
+dateYear.addEventListener("change", () => refreshDayOptions(dateDay.value));
 ["startTime","endTime"].forEach(id=>{
   const input=$(id);
   input.addEventListener("focus",()=>prepareTimeInput(input));
@@ -104,7 +133,6 @@ form.addEventListener("submit", (event)=>{
   records.push({id:crypto.randomUUID?crypto.randomUUID():`${Date.now()}-${Math.random()}`,date,start,end,minutes:mins});
   save();
   monthPicker.value=date.slice(0,7);
-  workDate.value=nextDateString(date);
   $("startTime").value="";
   $("endTime").value="";
   render();
@@ -138,7 +166,7 @@ $("importFile").addEventListener("change",async(event)=>{
   finally { event.target.value=""; }
 });
 monthPicker.value=monthString();
-workDate.value=localDateString();
+setDateSelector(localDateString());
 render();
 if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
   window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
