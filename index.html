@@ -37,14 +37,14 @@
         <div class="two">
           <div>
             <label for="startTime">Hora de inicio</label>
-            <input id="startTime" type="text" inputmode="numeric" autocomplete="off" maxlength="5" placeholder="HH:MM" aria-describedby="timeHint" required>
+            <input id="startTime" type="text" inputmode="numeric" autocomplete="off" maxlength="4" placeholder="HH:MM" aria-describedby="timeHint" required>
           </div>
           <div>
             <label for="endTime">Hora de término</label>
-            <input id="endTime" type="text" inputmode="numeric" autocomplete="off" maxlength="5" placeholder="HH:MM" aria-describedby="timeHint" required>
+            <input id="endTime" type="text" inputmode="numeric" autocomplete="off" maxlength="4" placeholder="HH:MM" aria-describedby="timeHint" required>
           </div>
         </div>
-        <p class="time-hint" id="timeHint">Escribe la hora en formato 24 horas. Ejemplo: 1730 se convierte en 17:30.</p>
+        <p class="time-hint" id="timeHint">Escribe 4 números sin dos puntos. Ejemplo: 1730. Al salir del campo aparecerá 17:30.</p>
         <p class="form-error" id="formError" role="alert"></p>
         <button class="primary" type="submit">＋ Agregar al registro</button>
       </form>
