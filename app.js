@@ -37,14 +37,14 @@ function save() {
   }
 }
 function parseTime(value) {
-  const match = String(value).trim().match(/^(\\d{1,2}):?(\\d{2})$/);
+  const match = String(value).trim().match(/^(\d{1,2}):?(\d{2})$/);
   if (!match) return null;
   const hours = Number(match[1]), minutes = Number(match[2]);
   if (hours > 23 || minutes > 59) return null;
   return `${String(hours).padStart(2,"0")}:${String(minutes).padStart(2,"0")}`;
 }
 function formatTimeInput(input) {
-  const digits = input.value.replace(/\\D/g,"").slice(0,4);
+  const digits = input.value.replace(/\D/g,"").slice(0,4);
   input.value = digits.length > 2 ? `${digits.slice(0,2)}:${digits.slice(2)}` : digits;
 }
 function duration(start,end) {
