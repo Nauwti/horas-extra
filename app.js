@@ -44,9 +44,14 @@ function parseTime(value) {
   return `${String(hours).padStart(2,"0")}:${String(minutes).padStart(2,"0")}`;
 }
 function formatTimeInput(input) {
-  const digits = input.value.replace(/\D/g,"").slice(0,4);
-  if (digits.length === 3) input.value = `0${digits[0]}:${digits.slice(1)}`;
-  else input.value = digits.length === 4 ? `${digits.slice(0,2)}:${digits.slice(2)}` : digits;
+  input.value = input.value.replace(/\D/g,"").slice(0,4);
+}
+function prepareTimeInput(input) {
+  input.value = input.value.replace(/\D/g,"").slice(0,4);
+}
+function finishTimeInput(input) {
+  const parsed = parseTime(input.value);
+  if (parsed) input.value = parsed;
 }
 function duration(start,end) {
   const [sh,sm]=start.split(":").map(Number);
@@ -77,8 +82,12 @@ function render() {
       <button class="delete" type="button" data-delete="${escapeHtml(r.id)}" aria-label="Eliminar registro">Eliminar registro</button>
     </article>`).join("");
 }
-$("startTime").addEventListener("input",()=>formatTimeInput($("startTime")));
-$("endTime").addEventListener("input",()=>formatTimeInput($("endTime")));
+["startTime","endTime"].forEach(id=>{
+  const input=$(id);
+  input.addEventListener("focus",()=>prepareTimeInput(input));
+  input.addEventListener("input",()=>formatTimeInput(input));
+  input.addEventListener("blur",()=>finishTimeInput(input));
+});
 form.addEventListener("submit", (event)=>{
   event.preventDefault();
   errorEl.textContent="";
