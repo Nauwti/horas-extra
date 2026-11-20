@@ -1,6 +1,5 @@
 const STORAGE_KEY = "horas-extra-registros-v1";
 const $ = (id) => document.getElementById(id);
-const monthPicker = $("monthPicker");
 const workDate = $("workDate");
 const dateDay = $("dateDay");
 const dateMonth = $("dateMonth");
@@ -16,7 +15,6 @@ function localDateString(date = new Date()) {
   const d = String(date.getDate()).padStart(2,"0");
   return `${y}-${m}-${d}`;
 }
-function monthString(date = new Date()) { return localDateString(date).slice(0,7); }
 function daysInMonth(year, month) {
   return new Date(year, month, 0).getDate();
 }
@@ -96,23 +94,24 @@ function escapeHtml(value) {
   return String(value).replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
 function render() {
-  const month = monthPicker.value;
-  const visible = records.filter(r=>r.date.startsWith(month)).sort((a,b)=>a.date.localeCompare(b.date)||a.start.localeCompare(b.start));
+  const visible = [...records].sort((a,b)=>b.date.localeCompare(a.date)||b.start.localeCompare(a.start));
   const total = visible.reduce((sum,r)=>sum+r.minutes,0);
   $("grandTotal").textContent = formatMinutes(total);
   $("entryCount").textContent = `${visible.length} ${visible.length===1?"registro":"registros"}`;
   if (!visible.length) {
-    entriesEl.innerHTML = '<p class="empty">Todavía no hay jornadas registradas en este mes.</p>';
-    return;
+    entriesEl.innerHTML = '<p class="empty">Todavía no hay jornadas registradas.</p>';
+  } else {
+    entriesEl.innerHTML = visible.map(r=>`
+      <article class="entry">
+        <div><div class="entry-date">${escapeHtml(r.date.split("-").reverse().join("-"))}</div>
+        <div class="entry-times">${escapeHtml(r.start)} a ${escapeHtml(r.end)}</div></div>
+        <div class="entry-duration">${formatMinutes(r.minutes)}</div>
+        <button class="delete" type="button" data-delete="${escapeHtml(r.id)}" aria-label="Eliminar registro">Eliminar registro</button>
+      </article>`).join("");
   }
-  entriesEl.innerHTML = visible.map(r=>`
-    <article class="entry">
-      <div><div class="entry-date">${escapeHtml(r.date.split("-").reverse().join("-"))}</div>
-      <div class="entry-times">${escapeHtml(r.start)} a ${escapeHtml(r.end)}</div></div>
-      <div class="entry-duration">${formatMinutes(r.minutes)}</div>
-      <button class="delete" type="button" data-delete="${escapeHtml(r.id)}" aria-label="Eliminar registro">Eliminar registro</button>
-    </article>`).join("");
+  $("clearAllBtn").disabled = records.length === 0;
 }
+
 dateDay.addEventListener("change", updateHiddenDate);
 $("nextDayBtn").addEventListener("click", () => {
   const [year, month, day] = workDate.value.split("-").map(Number);
@@ -137,9 +136,15 @@ form.addEventListener("submit", (event)=>{
   if (mins>=12*60) { errorEl.textContent="La duración supera 12 horas. Revisa que los horarios estén correctos."; return; }
   records.push({id:crypto.randomUUID?crypto.randomUUID():`${Date.now()}-${Math.random()}`,date,start,end,minutes:mins});
   save();
-  monthPicker.value=date.slice(0,7);
   $("startTime").value="";
   $("endTime").value="";
+  render();
+});
+$("clearAllBtn").addEventListener("click",()=>{
+  if (!records.length) return;
+  if (!confirm(`Vas a borrar los ${records.length} registros guardados. Esta acción no se puede deshacer. ¿Continuar?`)) return;
+  records = [];
+  save();
   render();
 });
 entriesEl.addEventListener("click",(event)=>{
@@ -150,7 +155,6 @@ entriesEl.addEventListener("click",(event)=>{
   records=records.filter(r=>r.id!==record.id);
   save(); render();
 });
-monthPicker.addEventListener("change",render);
 $("exportBtn").addEventListener("click",()=>{
   const blob=new Blob([JSON.stringify({app:"Horas Extra",version:1,exportedAt:new Date().toISOString(),records},null,2)],{type:"application/json"});
   const url=URL.createObjectURL(blob);
@@ -170,7 +174,6 @@ $("importFile").addEventListener("change",async(event)=>{
   } catch { alert("No se pudo leer el respaldo. Selecciona un archivo exportado desde Horas Extra."); }
   finally { event.target.value=""; }
 });
-monthPicker.value=monthString();
 setDateSelector(localDateString());
 render();
 if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
